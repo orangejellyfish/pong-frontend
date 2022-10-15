@@ -1,0 +1,60 @@
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: url("./bg.png") no-repeat center center fixed;
+  background-color: #000;
+  background-size: cover;
+}
+
+canvas {
+  position: absolute;
+  top: 160px;
+  left: 350px;
+}
+
+#game {
+  position: relative;
+  top: 160px;
+  left: 350px;
+  width: 750px;
+  height: 585px;
+  box-sizing: border-box;
+}
+
+.paddle {
+  width: 15px;
+  height: 75px;
+  position: absolute;
+  transition: all 0.1s linear;
+  display: none;
+}
+
+.paddle.left {
+  background-color: red;
+  left: 0;
+  top: 0;
+}
+
+.paddle.right {
+  background-color: blue;
+  left: 0;
+  top: 0;
+}
+
+#ball {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 15px;
+  height: 15px;
+  background-color: #fff;
+  transition: all 0.1s linear;
+  display: none;
+}
+
+#ball.resetting {
+  transition: none;
+}
