@@ -4,8 +4,13 @@ html, body {
 }
 
 body {
-  background: #000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  background: url("./bg.png") no-repeat center center fixed;
+  background-color: #000;
+  background-size: cover;
+}
+
+canvas {
+  position: absolute;
+  top: 160px;
+  left: 350px;
 }
