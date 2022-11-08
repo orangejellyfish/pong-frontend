@@ -6,7 +6,13 @@
     <link rel="stylesheet" href="./index.css" />
   </head>
   <body>
-    <canvas width="750" height="585" id="game"></canvas>
+    <div id="overlay">
+      <span>Waiting for game to start...</span>
+    </div>
+    <div class="controls">
+      <button type="button" id="button-up">⬆️</button>
+      <button type="button" id="button-down">⬇️</button>
+    </div>
     <script src="./socket.js"></script>
     <script src="./index.js"></script>
   </body>
