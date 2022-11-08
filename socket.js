@@ -4,7 +4,7 @@ const MAX_RECONNECT_ATTEMPTS = 10;
 const CHECK_SOCKET_READY_INTERVAL = 10;
 
 class Socket {
-  _url = new URL('wss://bhsg4iyyjj.execute-api.eu-west-1.amazonaws.com/james');
+  _url = new URL('wss://mr2kmmhhj4.execute-api.eu-west-1.amazonaws.com/production');
   _socket = null;
   _handlers = [];
   _reconnectAttempts = 0;
