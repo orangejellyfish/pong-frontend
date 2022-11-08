@@ -1,0 +1,16 @@
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: url("./bg.png") no-repeat center center fixed;
+  background-color: #000;
+  background-size: cover;
+}
+
+canvas {
+  position: absolute;
+  top: 160px;
+  left: 350px;
+}
