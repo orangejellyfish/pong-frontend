@@ -21,6 +21,7 @@ html, body {
   display: flex;
   flex-direction: column;
   gap: 1em;
+  user-select: none;
 }
 
 .controls button {
@@ -29,4 +30,9 @@ html, body {
   flex: 1;
   justify-content: center;
   align-items: center;
+  border-radius: 0;
+  border: 0;
+  border-top: 1px solid #999;
+  border-bottom: 1px solid #999;
+  user-select: none;
 }
