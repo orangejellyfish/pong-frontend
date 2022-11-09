@@ -16,7 +16,7 @@ html, body {
   color: #fff;
 }
 
-.controls {
+#controls {
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -24,7 +24,7 @@ html, body {
   user-select: none;
 }
 
-.controls button {
+#controls button {
   font-size: 10em;
   display: flex;
   flex: 1;
@@ -35,4 +35,12 @@ html, body {
   border-top: 1px solid #999;
   border-bottom: 1px solid #999;
   user-select: none;
+}
+
+#controls.left button {
+  background-color: red;
+}
+
+#controls.right button {
+  background-color: blue;
 }

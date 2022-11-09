@@ -44,12 +44,14 @@ const { ball, paddles: [leftPaddle, rightPaddle] } = state;
 
 // Drawing helpers.
 function drawPaddles() {
-  context.fillStyle = 'white';
+  context.fillStyle = 'red';
   context.fillRect(leftPaddle.x, leftPaddle.y, paddleWidth, paddleHeight);
+  context.fillStyle = 'blue';
   context.fillRect(rightPaddle.x, rightPaddle.y, paddleWidth, paddleHeight);
 }
 
 function drawBall() {
+  context.fillStyle = 'white';
   context.fillRect(ball.x, ball.y, ballWidth, ballHeight);
 }
 

@@ -1,4 +1,5 @@
 const overlay = document.getElementById('overlay');
+const controls = document.getElementById('controls');
 const buttonUp = document.getElementById('button-up');
 const buttonDown = document.getElementById('button-down');
 const socket = new Socket();
@@ -18,6 +19,7 @@ socket.onMessage((data) => {
 
   if (data.paddle !== undefined) {
     assignedPaddle = data.paddle;
+    controls.classList.add(assignedPaddle === 0 ? 'left' : 'right');
   }
 
   if (!gameInProgress) {
