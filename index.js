@@ -10,6 +10,12 @@ let assignedPaddle;
 //
 // TODO: know when a game starts and remove the overlay.
 socket.onMessage((data) => {
+  if (data.event === 'GAME_END') {
+    overlay.style.display = 'block';
+    gameInProgress = false;
+    return;
+  }
+
   if (data.paddle !== undefined) {
     assignedPaddle = data.paddle;
   }
