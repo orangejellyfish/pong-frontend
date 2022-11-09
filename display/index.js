@@ -83,22 +83,5 @@ function loop() {
   drawScores();
 }
 
-// Listen to keyboard events to move the paddles.
-document.addEventListener('keydown', function(e) {
-  // Up/down arrow keys.
-  if (e.which === 38) {
-    socket.send({ event: 1, paddle: 1 });
-  } else if (e.which === 40) {
-    socket.send({ event: -1, paddle: 1 });
-  }
-
-  // "W"/"A" keys.
-  if (e.which === 87) {
-    socket.send({ event: 1, paddle: 0 });
-  } else if (e.which === 83) {
-    socket.send({ event: -1, paddle: 0 });
-  }
-});
-
 // Start the game.
 requestAnimationFrame(loop);
