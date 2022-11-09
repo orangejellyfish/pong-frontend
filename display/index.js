@@ -12,6 +12,7 @@ const ballWidth = grid;
 const ballHeight = grid;
 
 // Initial game state. Mirrors that of the server.
+let previousState;
 const state = {
   scores: [0, 0],
   paddles: [
@@ -32,11 +33,16 @@ const state = {
 
 // Receive game state from server.
 socket.onMessage((data) => {
-  state.paddles[0].y = data.state.paddles[0].y;
-  state.paddles[1].y = data.state.paddles[1].y;
-  state.ball.x = data.state.ball.x;
-  state.ball.y = data.state.ball.y;
-  state.scores = data.state.scores;
+  if (data.state) {
+    previousState = JSON.parse(JSON.stringify(state));
+    state.paddles[0].y = data.state.paddles[0].y;
+    state.paddles[1].y = data.state.paddles[1].y;
+    state.ball.x = data.state.ball.x;
+    state.ball.y = data.state.ball.y;
+    state.scores = data.state.scores;
+
+    window.requestAnimationFrame(draw);
+  }
 });
 
 // Convenience references into game state.
@@ -44,13 +50,65 @@ const { ball, paddles: [leftPaddle, rightPaddle] } = state;
 
 // Drawing helpers.
 function drawPaddles() {
-  context.fillStyle = 'white';
-  context.fillRect(leftPaddle.x, leftPaddle.y, paddleWidth, paddleHeight);
-  context.fillRect(rightPaddle.x, rightPaddle.y, paddleWidth, paddleHeight);
+  const prevLeftY = previousState.paddles[0].y;
+  const prevRightY = previousState.paddles[1].y;
+  const targetLeftY = leftPaddle.y;
+  const targetRightY = rightPaddle.y;
+  let currentLeftY = prevLeftY;
+  let currentRightY = prevRightY;
+
+  function drawLeft() {
+    const leftMovement = currentLeftY < targetLeftY ? 0.5 : -0.5;
+    currentLeftY += leftMovement;
+
+    context.fillStyle = 'white';
+    context.fillRect(leftPaddle.x, currentLeftY, paddleWidth, paddleHeight);
+
+    if (currentLeftY !== targetLeftY) {
+      window.requestAnimationFrame(drawLeft);
+    }
+  }
+
+  function drawRight() {
+    const rightMovement = currentRightY < targetRightY ? 0.5 : -0.5;
+    currentRightY += rightMovement;
+
+    context.fillStyle = 'white';
+    context.fillRect(rightPaddle.x, currentRightY, paddleWidth, paddleHeight);
+
+    if (currentRightY !== targetRightY) {
+      window.requestAnimationFrame(draw);
+    }
+  }
+
+  drawLeft();
+  drawRight();
 }
 
 function drawBall() {
-  context.fillRect(ball.x, ball.y, ballWidth, ballHeight);
+  const prevX = Math.round(previousState.ball.x);
+  const prevY = Math.round(previousState.ball.y);
+  const targetX = Math.round(ball.x);
+  const targetY = Math.round(ball.y);
+  let currentX = prevX;
+  let currentY = prevY;
+
+  function draw() {
+    const xMovement = currentX < targetX ? 0.5 : currentX > targetX ? -0.5 : 0;
+    const yMovement = currentY < targetY ? 0.5 : currentY > targetY ? -0.5 : 0;
+
+    currentX += xMovement;
+    currentY += yMovement;
+
+    context.fillStyle = 'white';
+    context.fillRect(currentX, currentY, ballWidth, ballHeight);
+
+    if (currentX !== targetX || currentY !== targetY) {
+      window.requestAnimationFrame(draw);
+    }
+  }
+
+  draw();
 }
 
 function drawWalls() {
@@ -71,6 +129,16 @@ function drawScores() {
   context.fillText(state.scores[1], canvas.width / 2 + grid, grid * 4);
 }
 
+function draw() {
+  context.clearRect(0,0,canvas.width,canvas.height);
+
+  drawPaddles(); 
+  drawBall();
+  drawWalls();
+  drawHalfwayLine();
+  drawScores();
+}
+
 // Draw loop.
 function loop() {
   requestAnimationFrame(loop);
@@ -83,22 +151,5 @@ function loop() {
   drawScores();
 }
 
-// Listen to keyboard events to move the paddles.
-document.addEventListener('keydown', function(e) {
-  // Up/down arrow keys.
-  if (e.which === 38) {
-    socket.send({ event: 1, paddle: 1 });
-  } else if (e.which === 40) {
-    socket.send({ event: -1, paddle: 1 });
-  }
-
-  // "W"/"A" keys.
-  if (e.which === 87) {
-    socket.send({ event: 1, paddle: 0 });
-  } else if (e.which === 83) {
-    socket.send({ event: -1, paddle: 0 });
-  }
-});
-
 // Start the game.
-requestAnimationFrame(loop);
+// requestAnimationFrame(loop);
