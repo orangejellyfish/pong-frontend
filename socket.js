@@ -11,8 +11,8 @@ class Socket {
   _reconnectTimeout = null;
   _finished = false;
 
-  constructor(token, params = {}) {
-    for (const [key, value] of Object.entries({ token, ...params })) {
+  constructor(params = {}) {
+    for (const [key, value] of Object.entries(params)) {
       if ((value ?? null) !== null) {
         this._url.searchParams.append(key, value);
       }
