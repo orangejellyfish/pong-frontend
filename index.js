@@ -13,6 +13,9 @@ let assignedPaddle;
 socket.onMessage((data) => {
   if (data.event === 'GAME_END') {
     overlay.style.display = 'block';
+    if(data.winner){
+      alert(`The Winner is ${data.winner}`);
+    }
     gameInProgress = false;
     return;
   }
