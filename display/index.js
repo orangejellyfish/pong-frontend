@@ -30,6 +30,7 @@ const state = {
     x: canvas.width / 2,
     y: canvas.height / 2,
   },
+  players: [0,0],
 };
 
 // Receive game state from server.
@@ -39,6 +40,7 @@ socket.onMessage((data) => {
   state.ball.x = data.state.ball.x;
   state.ball.y = data.state.ball.y;
   state.scores = data.state.scores;
+  state.players = data.state.players;
 });
 
 // Convenience references into game state.
@@ -75,6 +77,14 @@ function drawScores() {
   context.fillText(state.scores[1], canvas.width / 2 + grid, grid * 4);
 }
 
+function drawPlayers() {
+  context.font = '20px Courier New';
+  context.fillStyle = 'red';
+  context.fillText(`${state.players[0]} playing`,0, canvas.height - grid - context.measureText(`${state.players[0]} playing`).actualBoundingBoxDescent);
+  context.fillStyle = 'blue';
+  context.fillText(`${state.players[1]} playing`,canvas.width - context.measureText(`${state.players[1]} playing`).width, canvas.height - grid - context.measureText(`${state.players[1]} playing`).actualBoundingBoxDescent);
+}
+
 // Draw loop.
 function loop() {
   requestAnimationFrame(loop);
@@ -85,6 +95,7 @@ function loop() {
   drawWalls();
   drawHalfwayLine();
   drawScores();
+  drawPlayers();
 }
 
 // Start the game.
