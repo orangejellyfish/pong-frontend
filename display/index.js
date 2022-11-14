@@ -4,6 +4,10 @@ const socket = new Socket({
 const canvas = document.getElementById('game');
 const context = canvas.getContext('2d');
 
+// Sounds.
+const soundBounceLeft = new Audio('./sound-bounce-left.mp3');
+const soundBounceRight = new Audio('./sound-bounce-right.mp3');
+
 // Drawing constants.
 const grid = 15;
 
@@ -41,6 +45,13 @@ socket.onMessage((data) => {
   state.ball.y = data.state.ball.y;
   state.scores = data.state.scores;
   state.players = data.state.players;
+
+  // If a bounce off a paddle has happened we play the relevant sound.
+  if (data.bounce === 0) {
+    soundBounceLeft.play(); 
+  } else if (data.bounce === 1) {
+    soundBounceRight.play();
+  }
 });
 
 // Convenience references into game state.
