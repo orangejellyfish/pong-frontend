@@ -32,8 +32,13 @@ const state = {
   },
 };
 
+let previousState = JSON.parse(JSON.stringify(state));
+let rendering;
+
 // Receive game state from server.
 socket.onMessage((data) => {
+  previousState = JSON.parse(JSON.stringify(state));
+
   state.paddles[0].y = data.state.paddles[0].y;
   state.paddles[1].y = data.state.paddles[1].y;
   state.ball.x = data.state.ball.x;
@@ -75,16 +80,32 @@ function drawScores() {
   context.fillText(state.scores[1], canvas.width / 2 + grid, grid * 4);
 }
 
-// Draw loop.
-function loop() {
-  requestAnimationFrame(loop);
-  context.clearRect(0,0,canvas.width,canvas.height);
-
+function draw() {
   drawPaddles(); 
   drawBall();
   drawWalls();
   drawHalfwayLine();
   drawScores();
+}
+
+// Draw loop.
+function loop() {
+  // requestAnimationFrame(loop);
+  context.clearRect(0,0,canvas.width,canvas.height);
+
+  const targetBallX = Math.ceil(ball.x);
+  const targetBallY = Math.ceil(ball.y);
+  let currentBallX = Math.ceil(previousState.ball.x);
+  let currentBallY = Math.ceil(previousState.ball.y);
+
+  if (currentBallX !== targetBallX && currentBallY !== targetBallY) {
+    currentBallX = currentBallX + 0.1;    
+    currentBallY = currentBallY + 0.1;    
+  }
+
+  draw();
+  requestAnimationFrame(loop);
+  rendering = false;
 }
 
 // Start the game.
